@@ -2,6 +2,14 @@
 import { useState } from 'react';
 import Search from '@/app/Components/Search';
 import CurrentWeather from '@/app/Components/CurrentWeather';
+import WeatherForecast from '@/app/Components/WeatherForecast';
+import {
+      Weather,
+      WeatherWithCity,
+      Forecast,
+      ForecastWithCity,
+} from '@/models/Weather';
+import { fetchForecast, fetchWeather } from '@/lib/fetchWeather';
 
 export type Option = {
       value: string;
@@ -14,19 +22,62 @@ export type Location = {
 
 function WeatherInfo() {
       const [location, setLocation] = useState<Location | null>(null);
+      const [currentWeather, setCurrentWeather] =
+            useState<WeatherWithCity | null>(null);
+      const [currentForecast, setCurrentForecast] =
+            useState<ForecastWithCity | null>(null);
+
       const handleOnSearchChange = async (selectedCity: Option) => {
             const [latitude, longitude] = selectedCity?.value.split(' ');
             setLocation({
                   latitude: parseFloat(latitude),
                   longitude: parseFloat(longitude),
             });
+            try {
+                  const [weatherData, forecastData] = await Promise.all([
+                        fetchWeather(
+                              parseFloat(latitude),
+                              parseFloat(longitude)
+                        ),
+                        fetchForecast(
+                              parseFloat(latitude),
+                              parseFloat(longitude)
+                        ),
+                  ]);
+                  if (forecastData && weatherData) {
+                        setCurrentForecast({
+                              city: selectedCity.label,
+                              ...forecastData,
+                        });
+                        console.log('forecastData', forecastData);
+
+                        setCurrentWeather({
+                              city: selectedCity.label,
+                              ...weatherData,
+                        });
+                  }
+            } catch (error) {
+                  console.log(error);
+            }
       };
-      console.log('location', location);
       return (
             <>
-                  <div className="max-w-6xl my-5 mx-auto">
+                  <div className="max-w-7xl my-5 mx-auto">
                         <Search onSearchChange={handleOnSearchChange} />
-                        <CurrentWeather />
+                        {currentWeather && (
+                              <CurrentWeather
+                                    weatherData={
+                                          currentWeather as WeatherWithCity
+                                    }
+                              />
+                        )}
+                        {currentForecast && (
+                              <WeatherForecast
+                                    forecastData={
+                                          currentForecast as ForecastWithCity
+                                    }
+                              />
+                        )}
                   </div>
             </>
       );

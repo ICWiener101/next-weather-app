@@ -9,7 +9,7 @@ function Search({ onSearchChange }: any) {
       const [searchValue, setSearchValue] = useState<Option | null>(null);
 
       const loadOptions = async (inputValue: string) => {
-            const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?minPopulation=100000&namePrefix=${inputValue}`;
+            const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?minPopulation=10000&namePrefix=${inputValue}`;
             const cities: CityList | undefined = await fetchCities(url);
             console.log('input value', inputValue);
 

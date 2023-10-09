@@ -6,8 +6,7 @@ export default async function fetchCities(
       const options = {
             method: 'GET',
             headers: {
-                  'X-RapidAPI-Key':
-                        'aa404b2e40mshfa8bb8dd8ad6482p176035jsn35d9aeababe3',
+                  'X-RapidAPI-Key': `${process.env.NEXT_PUBLIC_CITY_API_KEY}`,
                   'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
             },
       };
@@ -15,7 +14,7 @@ export default async function fetchCities(
       try {
             const response = await fetch(url, options);
             if (!response.ok) {
-                  throw new Error('Failde to fetch data');
+                  throw new Error('Failed to fetch data');
             }
             const result = await response.json();
             const parsedCityList = CityListSchema.parse(result.data);
