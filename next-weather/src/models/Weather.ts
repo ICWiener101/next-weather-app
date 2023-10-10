@@ -37,6 +37,10 @@ export const WeatherModel = z.object({
       name: z.string(),
 });
 
+const SunModel = z.object({
+      sunrise: z.number(),
+      sunset: z.number(),
+});
 const WeatherListItem = z.object({
       dt: z.number(),
       main: WeatherMain,

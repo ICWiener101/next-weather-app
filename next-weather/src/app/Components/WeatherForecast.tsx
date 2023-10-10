@@ -3,19 +3,28 @@ import { ForecastWithCity } from '@/models/Weather';
 type ForecastProps = {
       forecastData: ForecastWithCity;
 };
-import { degreesToWindDirection } from '@/lib/util';
+import {
+      degreesToWindDirection,
+      weekdayConverter,
+      unixTimestampToTime,
+} from '@/lib/util';
 
 function WeatherForecast({ forecastData }: ForecastProps) {
       const forecastList = forecastData.list.filter((date) => {
             return date.dt_txt.split(' ')[1] === '12:00:00';
       });
-      console.log('forecast component', forecastList);
 
       return (
-            <div className="flex justify-between my-5 w-12/12">
+            <div className="flex justify-between my-10 w-12/12 mx-auto flex-wrap">
                   {forecastList.map((item) => (
-                        <div className="w-1/6 flex rounded-mds p-2 flex-row flex-wrap bg-sky-100 shadow-xl">
-                              <div className="mx-auto flex justify-between items-center p-4">
+                        <div
+                              className="w-1/6 flex rounded-lg p-2 flex-row flex-wrap bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl items-center"
+                              key={item.dt}
+                        >
+                              <h3 className="text-center w-full font-semibold text-xl">
+                                    {weekdayConverter(item.dt_txt)}
+                              </h3>
+                              <div className="mx-auto flex justify-between items-center p-4 w-6/6">
                                     <div className="w-6/12">
                                           <img
                                                 src={`icons/${item.weather[0].icon}.png`}
@@ -31,8 +40,7 @@ function WeatherForecast({ forecastData }: ForecastProps) {
                                           </div>{' '}
                                     </div>
                               </div>
-                              <hr />
-                              <div className="mx-auto my-2 flex-wrap py-4">
+                              <div className="mx-auto my-2 flex-wrap p-2 w-full">
                                     <div className="flex justify-between flex-nowrap items-center align-middle">
                                           <div>Feels Like</div>
 
@@ -61,7 +69,7 @@ function WeatherForecast({ forecastData }: ForecastProps) {
                                     </div>
                                     <div className="flex justify-between flex-nowrap items-center align-middle">
                                           <div>Pressure</div>
-                                          <div>{item.main.pressure} hPa</div>
+                                          <div>{item.main.pressure}hPa</div>
                                     </div>
                               </div>
                         </div>

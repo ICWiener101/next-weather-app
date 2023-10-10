@@ -2,8 +2,10 @@ import WeatherInfo from './Components/WeatherInfo';
 
 export default async function Home() {
       return (
-            <div>
-                  <WeatherInfo />
-            </div>
+            <body className="min-h-screen bg-gradient-to-b from-slate-400 to-slate-200">
+                  <div>
+                        <WeatherInfo />
+                  </div>
+            </body>
       );
 }

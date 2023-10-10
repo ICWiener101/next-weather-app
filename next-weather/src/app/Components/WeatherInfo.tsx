@@ -1,8 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Search from '@/app/Components/Search';
 import CurrentWeather from '@/app/Components/CurrentWeather';
 import WeatherForecast from '@/app/Components/WeatherForecast';
+import Map from '@/app/Components/mapIndex';
+
 import {
       Weather,
       WeatherWithCity,
@@ -75,6 +77,13 @@ function WeatherInfo() {
                               <WeatherForecast
                                     forecastData={
                                           currentForecast as ForecastWithCity
+                                    }
+                              />
+                        )}
+                        {currentWeather && (
+                              <Map
+                                    weatherData={
+                                          currentWeather as WeatherWithCity
                                     }
                               />
                         )}

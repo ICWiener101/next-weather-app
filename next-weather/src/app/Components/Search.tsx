@@ -7,13 +7,9 @@ import { Option } from './WeatherInfo';
 
 function Search({ onSearchChange }: any) {
       const [searchValue, setSearchValue] = useState<Option | null>(null);
-
       const loadOptions = async (inputValue: string) => {
             const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?minPopulation=10000&namePrefix=${inputValue}`;
             const cities: CityList | undefined = await fetchCities(url);
-            console.log('input value', inputValue);
-
-            console.log('cities', cities);
 
             if (!cities) {
                   return { options: [] };
@@ -24,18 +20,18 @@ function Search({ onSearchChange }: any) {
                         value: `${city.latitude} ${city.longitude}`,
                         label: `${city.city}, ${city.country}`,
                   })) || [];
-            console.log(options);
 
             return { options };
       };
       const handleOnChange = (selectedCity: Option | null) => {
             setSearchValue(selectedCity);
             onSearchChange(selectedCity);
-            console.log(selectedCity);
       };
       return (
             <>
                   <AsyncPaginate
+                        className="w-2/3 mx-auto"
+                        placeholder="Search Your City"
                         debounceTimeout={600}
                         value={searchValue}
                         onChange={handleOnChange}
