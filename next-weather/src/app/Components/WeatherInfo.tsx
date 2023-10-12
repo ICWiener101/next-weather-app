@@ -25,8 +25,8 @@ function WeatherInfo() {
       const [location, setLocation] = useState<Location | null>(null);
       const [currentWeather, setCurrentWeather] =
             useState<NewWeatherSchemaWithCity | null>(null);
-      const [currentForecast, setCurrentForecast] =
-            useState<ForecastWithCity | null>(null);
+      // const [currentForecast, setCurrentForecast] =
+      //       useState<ForecastWithCity | null>(null);
 
       const handleOnSearchChange = async (selectedCity: Option) => {
             const [latitude, longitude] = selectedCity?.value.split(' ');
@@ -47,10 +47,10 @@ function WeatherInfo() {
                         ),
                   ]);
                   if (forecastData && weatherData) {
-                        setCurrentForecast({
-                              city: selectedCity.label,
-                              ...forecastData,
-                        });
+                        // setCurrentForecast({
+                        //       city: selectedCity.label,
+                        //       ...forecastData,
+                        // });
 
                         setCurrentWeather({
                               city: selectedCity.label,
@@ -64,7 +64,7 @@ function WeatherInfo() {
       };
       return (
             <>
-                  <div className="max-w-7xl my-5 mx-auto">
+                  <div className="max-w-6xl my-5 mx-auto">
                         <Search onSearchChange={handleOnSearchChange} />
                         {currentWeather && (
                               <CurrentWeather
@@ -73,10 +73,10 @@ function WeatherInfo() {
                                     }
                               />
                         )}
-                        {currentForecast && (
+                        {currentWeather && (
                               <WeatherForecast
                                     forecastData={
-                                          currentForecast as ForecastWithCity
+                                          currentWeather as NewWeatherSchemaWithCity
                                     }
                               />
                         )}

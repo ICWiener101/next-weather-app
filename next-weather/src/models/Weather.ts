@@ -106,6 +106,7 @@ const DailyData = z.object({
       sunrise: z.array(z.string()),
       sunset: z.array(z.string()),
       uv_index_max: z.array(z.number()),
+      precipitation_probability_max: z.array(z.number()),
 });
 
 // Define the top-level schema for the entire JSON data
