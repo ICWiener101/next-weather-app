@@ -1,15 +1,14 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Search from '@/app/Components/Search';
 import CurrentWeather from '@/app/Components/CurrentWeather';
 import WeatherForecast from '@/app/Components/WeatherForecast';
-import Map from '@/app/Components/mapIndex';
+import Map from '@/app/Components/map/mapIndex';
 
 import {
-      Weather,
       WeatherWithCity,
-      Forecast,
       ForecastWithCity,
+      NewWeatherSchemaWithCity,
 } from '@/models/Weather';
 import { fetchForecast, fetchWeather } from '@/lib/fetchWeather';
 
@@ -25,7 +24,7 @@ export type Location = {
 function WeatherInfo() {
       const [location, setLocation] = useState<Location | null>(null);
       const [currentWeather, setCurrentWeather] =
-            useState<WeatherWithCity | null>(null);
+            useState<NewWeatherSchemaWithCity | null>(null);
       const [currentForecast, setCurrentForecast] =
             useState<ForecastWithCity | null>(null);
 
@@ -41,6 +40,7 @@ function WeatherInfo() {
                               parseFloat(latitude),
                               parseFloat(longitude)
                         ),
+
                         fetchForecast(
                               parseFloat(latitude),
                               parseFloat(longitude)
@@ -51,7 +51,6 @@ function WeatherInfo() {
                               city: selectedCity.label,
                               ...forecastData,
                         });
-                        console.log('forecastData', forecastData);
 
                         setCurrentWeather({
                               city: selectedCity.label,
@@ -61,6 +60,7 @@ function WeatherInfo() {
             } catch (error) {
                   console.log(error);
             }
+            console.log('weatherData', currentWeather);
       };
       return (
             <>
@@ -69,7 +69,7 @@ function WeatherInfo() {
                         {currentWeather && (
                               <CurrentWeather
                                     weatherData={
-                                          currentWeather as WeatherWithCity
+                                          currentWeather as NewWeatherSchemaWithCity
                                     }
                               />
                         )}
@@ -80,13 +80,13 @@ function WeatherInfo() {
                                     }
                               />
                         )}
-                        {currentWeather && (
+                        {/* {currentWeather && (
                               <Map
                                     weatherData={
                                           currentWeather as WeatherWithCity
                                     }
                               />
-                        )}
+                        )} */}
                   </div>
             </>
       );

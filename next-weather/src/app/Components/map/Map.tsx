@@ -19,14 +19,14 @@ function Map({ weatherData }: CurrentWeatherProps) {
             iconAnchor: [12, 41],
       });
       const mapStyle = {
-            height: '396px',
+            height: '100%',
             width: '100%',
             margin: '0 auto',
             borderRadius: '12px',
       };
 
       return (
-            <div className="max-h-96 w-9/12 mx-auto rounded-xl mb-28">
+            <div className="h-96 w-9/12 mx-auto rounded-xl mb-28">
                   <MapContainer
                         center={mapPosition as [number, number]}
                         style={mapStyle}
