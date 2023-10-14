@@ -1,15 +1,74 @@
-import Link from 'next/link';
+'use client';
+import { useState } from 'react';
+import { NewWeatherSchemaWithCity } from '@/models/Weather';
+import { fetchWeather } from '@/lib/fetchWeather';
 
+export type Option = {
+      value: string;
+      label: string;
+};
+export type Location = {
+      latitude: number;
+      longitude: number;
+};
+import Link from 'next/link';
+import WeatherInfo from '@/app/Components/WeatherInfo';
 import Page from '@/app/today/page';
+import Search from '@/app/Components/Search';
 
 const Navbar = () => {
+      const [location, setLocation] = useState<Location | null>(null);
+      const [currentWeather, setCurrentWeather] =
+            useState<NewWeatherSchemaWithCity | null>(null);
+
+      const handleOnSearchChange = async (selectedCity: Option) => {
+            const [latitude, longitude] = selectedCity?.value.split(' ');
+            setLocation({
+                  latitude: parseFloat(latitude),
+                  longitude: parseFloat(longitude),
+            });
+            try {
+                  const weatherData = await fetchWeather(
+                        parseFloat(latitude),
+                        parseFloat(longitude)
+                  );
+
+                  if (weatherData) {
+                        setCurrentWeather({
+                              city: selectedCity.label,
+                              ...weatherData,
+                        });
+                  }
+            } catch (error) {
+                  console.log(error);
+            }
+      };
       return (
-            <header className="bg-black sticky top-0 z-10">
-                  <nav className="flex flex-col gap-4 sm:flex-row sm:justify-between items-center p-4 font-bold max-w-6xl mx-auto text-white">
-                        <Link href="/">Home</Link>
-                        <Link href="/today">Today</Link>
-                  </nav>
-            </header>
+            <>
+                  <header className="bg-gradient-to-r from-sky-200 to-sky-300 shadow-xl sticky top-0 z-10">
+                        <nav className="flex justify-between sm:flex-row sm:justify-between p-4 font-bold max-w-6xl items-center mx-auto text-gray-600">
+                              <div className="w-1/6 flex justify-evenly">
+                                    <Link href="/">Home</Link>
+                                    <Link href="/today">Today</Link>
+                              </div>
+                              <div>
+                                    {' '}
+                                    <Search
+                                          onSearchChange={handleOnSearchChange}
+                                    />
+                              </div>
+                        </nav>
+                  </header>
+                  <div>
+                        {currentWeather && (
+                              <WeatherInfo
+                                    weatherData={
+                                          currentWeather as NewWeatherSchemaWithCity
+                                    }
+                              />
+                        )}
+                  </div>
+            </>
       );
 };
 

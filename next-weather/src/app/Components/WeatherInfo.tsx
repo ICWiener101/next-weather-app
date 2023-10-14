@@ -1,92 +1,34 @@
-'use client';
-import { useState } from 'react';
-import Search from '@/app/Components/Search';
 import CurrentWeather from '@/app/Components/CurrentWeather';
 import WeatherForecast from '@/app/Components/WeatherForecast';
 import Map from '@/app/Components/map/mapIndex';
+import { NewWeatherSchemaWithCity, HourlyData } from '@/models/Weather';
+import { CurrentWeatherProps } from '@/app/Components/CurrentWeather';
+import HourlyForecast from '@/app/Components/HourlyForecast';
 
-import {
-      WeatherWithCity,
-      ForecastWithCity,
-      NewWeatherSchemaWithCity,
-} from '@/models/Weather';
-import { fetchForecast, fetchWeather } from '@/lib/fetchWeather';
-
-export type Option = {
-      value: string;
-      label: string;
-};
-export type Location = {
-      latitude: number;
-      longitude: number;
-};
-
-function WeatherInfo() {
-      const [location, setLocation] = useState<Location | null>(null);
-      const [currentWeather, setCurrentWeather] =
-            useState<NewWeatherSchemaWithCity | null>(null);
-      // const [currentForecast, setCurrentForecast] =
-      //       useState<ForecastWithCity | null>(null);
-
-      const handleOnSearchChange = async (selectedCity: Option) => {
-            const [latitude, longitude] = selectedCity?.value.split(' ');
-            setLocation({
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-            });
-            try {
-                  const [weatherData, forecastData] = await Promise.all([
-                        fetchWeather(
-                              parseFloat(latitude),
-                              parseFloat(longitude)
-                        ),
-
-                        fetchForecast(
-                              parseFloat(latitude),
-                              parseFloat(longitude)
-                        ),
-                  ]);
-                  if (forecastData && weatherData) {
-                        // setCurrentForecast({
-                        //       city: selectedCity.label,
-                        //       ...forecastData,
-                        // });
-
-                        setCurrentWeather({
-                              city: selectedCity.label,
-                              ...weatherData,
-                        });
-                  }
-            } catch (error) {
-                  console.log(error);
-            }
-            console.log('weatherData', currentWeather);
-      };
+function WeatherInfo({ weatherData }: CurrentWeatherProps) {
       return (
             <>
-                  <div className="max-w-6xl my-5 mx-auto">
-                        <Search onSearchChange={handleOnSearchChange} />
-                        {currentWeather && (
-                              <CurrentWeather
-                                    weatherData={
-                                          currentWeather as NewWeatherSchemaWithCity
-                                    }
-                              />
-                        )}
-                        {currentWeather && (
-                              <WeatherForecast
-                                    forecastData={
-                                          currentWeather as NewWeatherSchemaWithCity
-                                    }
-                              />
-                        )}
-                        {/* {currentWeather && (
-                              <Map
-                                    weatherData={
-                                          currentWeather as WeatherWithCity
-                                    }
-                              />
-                        )} */}
+                  <div className="w-12/12 my-5 mx-auto">
+                        <CurrentWeather
+                              weatherData={
+                                    weatherData as NewWeatherSchemaWithCity
+                              }
+                        />
+                        <HourlyForecast
+                              weatherData={weatherData.hourly as HourlyData}
+                        />
+
+                        <WeatherForecast
+                              weatherData={
+                                    weatherData as NewWeatherSchemaWithCity
+                              }
+                        />
+
+                        <Map
+                              weatherData={
+                                    weatherData as NewWeatherSchemaWithCity
+                              }
+                        />
                   </div>
             </>
       );

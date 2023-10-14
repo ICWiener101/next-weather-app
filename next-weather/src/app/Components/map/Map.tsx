@@ -6,13 +6,13 @@ import React, { useEffect, useState } from 'react';
 
 function Map({ weatherData }: CurrentWeatherProps) {
       const [mapPosition, setMapPosition] = useState([
-            weatherData.coord.lat,
-            weatherData.coord.lon,
+            weatherData.latitude,
+            weatherData.longitude,
       ]);
 
       useEffect(() => {
-            setMapPosition([weatherData.coord.lat, weatherData.coord.lon]);
-      }, [weatherData.coord]);
+            setMapPosition([weatherData.latitude, weatherData.longitude]);
+      }, [weatherData.latitude || weatherData.longitude]);
       const markerIcon = new Icon({
             iconUrl: '../../icons/google-maps.png',
             iconSize: [35, 41],
@@ -46,10 +46,6 @@ function Map({ weatherData }: CurrentWeatherProps) {
                               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                               url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`}
                         />
-                        {/* <TileLayer
-                              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                              url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`}
-                        /> */}
                         <Marker
                               position={mapPosition as [number, number]}
                               icon={markerIcon}

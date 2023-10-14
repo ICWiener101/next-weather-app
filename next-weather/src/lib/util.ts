@@ -40,19 +40,6 @@ export function weekdayConverter(dateString: string) {
       return weekday;
 }
 
-export function unixTimestampToTime(unixTimestamp: number) {
-      const date = new Date(unixTimestamp * 1000); // Convert to milliseconds
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      //   const seconds = date.getSeconds();
-
-      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes
-            .toString()
-            .padStart(2, '0')}`;
-
-      return formattedTime;
-}
-
 export function weatherDescIcon(weatherCode: number, isDay: number) {
       if (isDay) {
             const weatherDescriptionAndIcon: {

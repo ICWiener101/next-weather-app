@@ -11,7 +11,5 @@ const CitySchema = z.object({
 });
 
 export type City = z.infer<typeof CitySchema>;
-
 export type CityList = z.infer<typeof CitySchema>[];
-
 export const CityListSchema = z.array(CitySchema);

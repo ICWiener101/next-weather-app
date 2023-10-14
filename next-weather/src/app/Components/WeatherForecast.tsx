@@ -1,236 +1,53 @@
-import React from 'react';
-import { ForecastWithCity, NewWeatherSchemaWithCity } from '@/models/Weather';
-type ForecastProps = {
-      forecastData: NewWeatherSchemaWithCity;
-};
-import {
-      degreesToWindDirection,
-      weekdayConverter,
-      weatherDescIcon,
-} from '@/lib/util';
+import { CurrentWeatherProps } from '@/app/Components/CurrentWeather';
+import DailyForecastTile from '@/app/Components/DailyForecastTile';
 
-function WeatherForecast({ forecastData }: ForecastProps) {
-      // const forecastList = forecastData.list.filter((date) => {
-      //       return date.dt_txt.split(' ')[1] === '12:00:00';
-      // });
-
+function WeatherForecast({ weatherData }: CurrentWeatherProps) {
       return (
-            <div className="grid grid-cols-4 gap-16 justify-between my-10 w-12/12 mx-auto ">
-                  {forecastData.daily.time.slice(1).map((dateStr, index) => {
-                        const date = new Date(dateStr);
-                        const dayOfWeek = weekdayConverter(dateStr);
-
+            <div className="grid grid-cols-4 gap-16 justify-between my-10 max-w-7xl mx-auto ">
+                  {weatherData.daily.time.slice(1).map((dateStr, index) => {
                         return (
-                              <>
-                                    <div
-                                          className="flex rounded-lg p-2 flex-row flex-wrap bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl items-center"
-                                          key={dayOfWeek}
-                                    >
-                                          <h3 className="text-center w-full font-semibold text-xl">
-                                                {dayOfWeek}
-                                          </h3>
-                                          <div className="mx-auto flex justify-between items-center p-4 w-6/6">
-                                                <div className="w-6/12">
-                                                      <img
-                                                            // src={`icons/${weatherDescIcon(forecastData.daily.weathercode[index],1)}.png`}
-                                                            alt=""
-                                                      />
-                                                </div>
-                                                <div>
-                                                      <div>
-                                                            {Math.ceil(
-                                                                  forecastData
-                                                                        .daily
-                                                                        .temperature_2m_max[
-                                                                        index
-                                                                  ]
-                                                            )}
-                                                            &#8451;/
-                                                            {Math.ceil(
-                                                                  forecastData
-                                                                        .daily
-                                                                        .temperature_2m_min[
-                                                                        index
-                                                                  ]
-                                                            )}
-                                                            &#8451;
-                                                      </div>{' '}
-                                                </div>
-                                          </div>
-                                          <div className="mx-auto my-2 flex-wrap p-2 w-full">
-                                                <div className="flex justify-between flex-nowrap items-center align-middle">
-                                                      {/* <div>Feels Like</div>
-
-                                                      <div>
-                                                            {Math.ceil(
-
-                                                            )}
-                                                            &#8451;
-                                                      </div> */}
-                                                </div>
-                                                <div className="flex justify-between flex-nowrap items-center align-middle">
-                                                      {/* <div>Wind</div>
-
-                                                      <div>
-                                                            {Math.ceil(
-                                                                  item.wind
-                                                                        .speed
-                                                            )}{' '}
-                                                            m/s
-                                                            <span className="pl-1 font-semibold  text-cyan-900">
-                                                                  {degreesToWindDirection(
-                                                                        item
-                                                                              .wind
-                                                                              .deg
-                                                                  )}
-                                                            </span>
-                                                      </div> */}
-                                                </div>
-                                                <div className="flex justify-between flex-nowrap items-center align-middle">
-                                                      <div>Chance to rain</div>
-                                                      <div>
-                                                            {
-                                                                  forecastData
-                                                                        .daily
-                                                                        .precipitation_probability_max[
-                                                                        index
-                                                                  ]
-                                                            }
-                                                            &#37;
-                                                      </div>
-                                                </div>
-                                                <div className="flex justify-between flex-nowrap items-center align-middle">
-                                                      {/* <div>Pressure</div>
-                                                      <div>
-                                                            {item.main.pressure}
-                                                            hPa
-                                                      </div> */}
-                                                </div>
-                                                <div key={dateStr}>
-                                                      <div>
-                                                            Max Temperature:{' '}
-                                                            {Math.ceil(
-                                                                  forecastData
-                                                                        .daily
-                                                                        .temperature_2m_max[
-                                                                        index
-                                                                  ]
-                                                            )}
-                                                            °C
-                                                      </div>
-                                                      <div>
-                                                            Min Temperature:{' '}
-                                                            {Math.ceil(
-                                                                  forecastData
-                                                                        .daily
-                                                                        .temperature_2m_min[
-                                                                        index
-                                                                  ]
-                                                            )}
-                                                            °C
-                                                      </div>
-                                                      <div>
-                                                            Sunrise:{' '}
-                                                            {
-                                                                  forecastData
-                                                                        .daily
-                                                                        .sunrise[
-                                                                        index
-                                                                  ]
-                                                            }
-                                                      </div>
-                                                      <div>
-                                                            Sunset:{' '}
-                                                            {
-                                                                  forecastData
-                                                                        .daily
-                                                                        .sunset[
-                                                                        index
-                                                                  ]
-                                                            }
-                                                      </div>
-                                                </div>
-                                          </div>
-                                    </div>
-                              </>
+                              <DailyForecastTile
+                                    key={index}
+                                    dateStr={dateStr}
+                                    maxTemperature={
+                                          weatherData.daily.temperature_2m_max[
+                                                index
+                                          ]
+                                    }
+                                    minTemperature={
+                                          weatherData.daily.temperature_2m_min[
+                                                index
+                                          ]
+                                    }
+                                    sunrise={weatherData.daily.sunrise[index]}
+                                    sunset={weatherData.daily.sunset[index]}
+                                    weathercode={
+                                          weatherData.daily.weathercode[index]
+                                    }
+                                    precipitation={
+                                          weatherData.daily
+                                                .precipitation_probability_max[
+                                                index
+                                          ]
+                                    }
+                                    windSpeed={
+                                          weatherData.daily.windspeed_10m_max[
+                                                index
+                                          ]
+                                    }
+                                    windDirection={
+                                          weatherData.daily
+                                                .winddirection_10m_dominant[
+                                                index
+                                          ]
+                                    }
+                                    uvIndex={
+                                          weatherData.daily.uv_index_max[index]
+                                    }
+                              />
                         );
                   })}
             </div>
       );
 }
 export default WeatherForecast;
-
-// <div>
-//       <div>
-//             <div>vailable days</div>
-//             <div>max temperature</div>
-//             <div>min temperature</div>
-//             <div>Sunrise</div>
-//             <div>Sunset</div>
-//       </div>
-//       {forecastData.daily.time.slice(1).map((day) => (
-//             <div key={day}>{weekdayConverter(day)}</div>
-//       ))}
-// </div>
-
-// <div className="flex justify-between my-10 w-12/12 mx-auto flex-wrap">
-//       {forecastList.map((item) => (
-//             <div
-//                   className="w-1/6 flex rounded-lg p-2 flex-row flex-wrap bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl items-center"
-//                   key={item.dt}
-//             >
-//                   <h3 className="text-center w-full font-semibold text-xl">
-//                         {weekdayConverter(item.dt_txt)}
-//                   </h3>
-//                   <div className="mx-auto flex justify-between items-center p-4 w-6/6">
-//                         <div className="w-6/12">
-//                               <img
-//                                     src={`icons/${item.weather[0].icon}.png`}
-//                                     alt=""
-//                               />
-//                         </div>
-//                         <div>
-//                               <div>
-//                                     {Math.ceil(item.main.temp_max)}
-//                                     &#8451;/
-//                                     {Math.ceil(item.main.temp_min)}
-//                                     &#8451;
-//                               </div>{' '}
-//                         </div>
-//                   </div>
-//                   <div className="mx-auto my-2 flex-wrap p-2 w-full">
-//                         <div className="flex justify-between flex-nowrap items-center align-middle">
-//                               <div>Feels Like</div>
-
-//                               <div>
-//                                     {Math.ceil(
-//                                           item.main.feels_like
-//                                     )}
-//                                     &#8451;
-//                               </div>
-//                         </div>
-//                         <div className="flex justify-between flex-nowrap items-center align-middle">
-//                               <div>Wind</div>
-
-//                               <div>
-//                                     {Math.ceil(item.wind.speed)} m/s
-//                                     <span className="pl-1 font-semibold  text-cyan-900">
-//                                           {degreesToWindDirection(
-//                                                 item.wind.deg
-//                                           )}
-//                                     </span>
-//                               </div>
-//                         </div>
-//                         <div className="flex justify-between flex-nowrap items-center align-middle">
-//                               <div>Humidity</div>
-//                               <div>{item.main.humidity}&#37;</div>
-//                         </div>
-//                         <div className="flex justify-between flex-nowrap items-center align-middle">
-//                               <div>Pressure</div>
-//                               <div>{item.main.pressure}hPa</div>
-//                         </div>
-//                   </div>
-//             </div>
-//       ))}
-// </div>
-// );

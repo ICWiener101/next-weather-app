@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.10.7",
     "leaflet": "^1.9.4",
     "next": "13.5.4",
     "react": "^18",

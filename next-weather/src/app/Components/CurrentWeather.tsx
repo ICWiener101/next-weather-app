@@ -1,5 +1,5 @@
 import React from 'react';
-import { WeatherWithCity, NewWeatherSchemaWithCity } from '@/models/Weather';
+import { NewWeatherSchemaWithCity } from '@/models/Weather';
 export type CurrentWeatherProps = {
       weatherData: NewWeatherSchemaWithCity;
 };
@@ -10,10 +10,8 @@ function CurrentWeather({ weatherData }: CurrentWeatherProps) {
             weatherData.current.weathercode,
             weatherData.current.is_day
       );
-      console.log(desc);
 
       return (
-            // <div>{weatherData.current.temperature_2m}</div>
             <div className="my-5 max-w-md rounded-xl p-2 flex flex-col justify-center mx-auto  bg-gradient-to-b from-sky-200 to-sky-300 shadow-xl hover:shadow-2xl">
                   <div className="flex items-end justify-end w-full flex-col">
                         <span className="pr-1 font-medium text-xs">
