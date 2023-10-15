@@ -1,9 +1,16 @@
 import { CurrentWeatherProps } from '@/app/Components/CurrentWeather';
 import DailyForecastTile from '@/app/Components/DailyForecastTile';
+import { motion } from 'framer-motion';
 
 function WeatherForecast({ weatherData }: CurrentWeatherProps) {
       return (
-            <div className="grid grid-cols-4 gap-16 justify-between my-10 max-w-7xl mx-auto ">
+            <motion.div
+                  key={weatherData.city}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  className="flex flex-col my-10 w-1/3 mx-auto gap-12"
+            >
                   {weatherData.daily.time.slice(1).map((dateStr, index) => {
                         return (
                               <DailyForecastTile
@@ -47,7 +54,7 @@ function WeatherForecast({ weatherData }: CurrentWeatherProps) {
                               />
                         );
                   })}
-            </div>
+            </motion.div>
       );
 }
 export default WeatherForecast;

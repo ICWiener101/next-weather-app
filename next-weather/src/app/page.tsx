@@ -1,11 +1,5 @@
 import Navbar from './Components/Navbar';
 
 export default function Home() {
-      return (
-            <body className="min-h-screen bg-gradient-to-b from-slate-400 to-slate-200">
-                  <div>
-                        <Navbar />
-                  </div>
-            </body>
-      );
+      return <Navbar />;
 }

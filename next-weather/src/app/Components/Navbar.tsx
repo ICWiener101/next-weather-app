@@ -11,9 +11,9 @@ export type Location = {
       latitude: number;
       longitude: number;
 };
-import Link from 'next/link';
+
 import WeatherInfo from '@/app/Components/WeatherInfo';
-import Page from '@/app/today/page';
+
 import Search from '@/app/Components/Search';
 
 const Navbar = () => {
@@ -46,12 +46,12 @@ const Navbar = () => {
       return (
             <>
                   <header className="bg-gradient-to-r from-sky-200 to-sky-300 shadow-xl sticky top-0 z-10">
-                        <nav className="flex justify-between sm:flex-row sm:justify-between p-4 font-bold max-w-6xl items-center mx-auto text-gray-600">
-                              <div className="w-1/6 flex justify-evenly">
+                        <nav className="flex justify-center sm:flex-row sm:justify-between p-4 font-bold max-w-6xl items-center mx-auto text-gray-600">
+                              {/* <div className="w-1/6 flex justify-evenly">
                                     <Link href="/">Home</Link>
                                     <Link href="/today">Today</Link>
-                              </div>
-                              <div>
+                              </div> */}
+                              <div className="mx-auto">
                                     {' '}
                                     <Search
                                           onSearchChange={handleOnSearchChange}

@@ -4,13 +4,17 @@ import {
       createColumnHelper,
       flexRender,
       getCoreRowModel,
+      getPaginationRowModel,
       useReactTable,
 } from '@tanstack/react-table';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { degreesToWindDirection, weatherDescIcon } from '@/lib/util';
+import { motion } from 'framer-motion';
+
 type HourlyProps = {
       weatherData: HourlyData;
 };
+
 type HourlyTable = {
       time: string;
       temperature_2m: number;
@@ -20,6 +24,7 @@ type HourlyTable = {
       winddirection_10m: number;
       uv_index: number;
       weathercode: number;
+      is_day: number;
 };
 const columnHelper = createColumnHelper<HourlyTable>();
 const columns = [
@@ -29,14 +34,26 @@ const columns = [
       }),
       columnHelper.accessor('weathercode', {
             header: 'Description',
-            cell: (info) => (
+            cell: ({ row }) => (
                   <div className="flex items-center justify-evenly w-full">
-                        {weatherDescIcon(info.getValue(), 1)?.description}
+                        {
+                              weatherDescIcon(
+                                    row.original.weathercode,
+                                    row.original.is_day
+                              )?.description
+                        }
                         <img
-                              src={weatherDescIcon(info.getValue(), 1)?.iconUrl}
+                              src={
+                                    weatherDescIcon(
+                                          row.original.weathercode,
+                                          row.original.is_day
+                                    )?.iconUrl
+                              }
                               alt={
-                                    weatherDescIcon(info.getValue(), 1)
-                                          ?.description
+                                    weatherDescIcon(
+                                          row.original.weathercode,
+                                          row.original.is_day
+                                    )?.description
                               }
                               className="w-7 h-full"
                         />
@@ -61,7 +78,11 @@ const columns = [
       }),
       columnHelper.accessor('winddirection_10m', {
             header: 'Wind Direction',
-            cell: (info) => degreesToWindDirection(Math.ceil(info.getValue())),
+            cell: (info) => (
+                  <span className="bg-transparent font-bold">
+                        {degreesToWindDirection(info.getValue())}
+                  </span>
+            ),
       }),
       columnHelper.accessor('uv_index', {
             header: 'UV Index',
@@ -87,14 +108,14 @@ function HourlyForecast({ weatherData }: HourlyProps) {
                         winddirection_10m: weatherData.winddirection_10m[index],
                         uv_index: weatherData.uv_index[index],
                         weathercode: weatherData.weathercode[index],
+                        is_day: weatherData.weathercode[index],
                   }))
                   .filter((data) => {
                         const dataTime = new Date(data.time);
                         const dataHour = dataTime.getHours();
 
                         return dataHour >= hour || dataTime > new Date();
-                  })
-                  .slice(0, 10);
+                  });
             setData(newData);
       }, [weatherData, hour]);
 
@@ -102,12 +123,19 @@ function HourlyForecast({ weatherData }: HourlyProps) {
             data,
             columns,
             getCoreRowModel: getCoreRowModel(),
+            getPaginationRowModel: getPaginationRowModel(),
       });
 
       return (
-            <div className="p-2 max-w-6xl mx-auto rounded-lg overflow-hidden">
-                  <table className="text-center rounded-lg table-auto w-full bg-gradient-to-b border border-slate-300 from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl">
-                        <thead>
+            <div className="p-2 max-w-6xl mx-auto rounded-xl">
+                  <motion.table
+                        key={`${weatherData.time[0]}-${weatherData.apparent_temperature[0]}`}
+                        animate={{ x: '0%' }}
+                        transition={{ duration: 0.4 }}
+                        initial={{ x: '-100%' }}
+                        className="text-center rounded-xl border-0 table-auto w-full border-slate-300 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl rounded-b-xl"
+                  >
+                        <thead className="h-12">
                               {table.getHeaderGroups().map((headerGroup) => (
                                     <tr key={headerGroup.id}>
                                           {headerGroup.headers.map(
@@ -132,10 +160,13 @@ function HourlyForecast({ weatherData }: HourlyProps) {
                               {table.getRowModel().rows.map((row, index) => (
                                     <tr
                                           key={index}
-                                          className=" border border-slate-300 h-12"
+                                          className="border border-l-0 border-r-0 border-b-0 border-slate-300 h-12  hover:bg-currentWeatherBlue"
                                     >
                                           {row.getVisibleCells().map((cell) => (
-                                                <td key={cell.id}>
+                                                <td
+                                                      className="bg-transparent"
+                                                      key={cell.id}
+                                                >
                                                       {flexRender(
                                                             cell.column
                                                                   .columnDef
@@ -147,7 +178,36 @@ function HourlyForecast({ weatherData }: HourlyProps) {
                                     </tr>
                               ))}
                         </tbody>
-                  </table>
+                        <tfoot className="text-center rounded-xl border-0 border-t table-auto  border-slate-300 h-12">
+                              <tr>
+                                    <td colSpan={8}>
+                                          <div className="mx-auto w-1/3 flex justify-evenly">
+                                                <button
+                                                      onClick={() =>
+                                                            table.previousPage()
+                                                      }
+                                                      disabled={
+                                                            !table.getCanPreviousPage()
+                                                      }
+                                                >
+                                                      Previous
+                                                </button>{' '}
+                                                <button
+                                                      className="hover:text-[#3099EA]"
+                                                      onClick={() =>
+                                                            table.nextPage()
+                                                      }
+                                                      disabled={
+                                                            !table.getCanNextPage()
+                                                      }
+                                                >
+                                                      Next
+                                                </button>
+                                          </div>
+                                    </td>
+                              </tr>
+                        </tfoot>
+                  </motion.table>
                   <div className="h-4" />
             </div>
       );

@@ -49,19 +49,21 @@ function Search({ onSearchChange }: any) {
       };
       return (
             <>
-                  <AsyncPaginate
-                        className="w-96 text-gray-500"
-                        components={{
-                              DropdownIndicator: () => null,
-                              IndicatorSeparator: () => null,
-                        }}
-                        placeholder="Search Your City"
-                        debounceTimeout={600}
-                        value={searchValue}
-                        onChange={handleOnChange}
-                        loadOptions={loadOptions}
-                        styles={customStyles}
-                  />
+                  <div className="w-96 text-gray-500">
+                        {' '}
+                        <AsyncPaginate
+                              components={{
+                                    DropdownIndicator: () => null,
+                                    IndicatorSeparator: () => null,
+                              }}
+                              placeholder="Search Your City"
+                              debounceTimeout={600}
+                              value={searchValue}
+                              onChange={handleOnChange}
+                              loadOptions={loadOptions}
+                              styles={customStyles}
+                        />
+                  </div>
             </>
       );
 }

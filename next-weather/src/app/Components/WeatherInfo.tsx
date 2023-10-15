@@ -8,7 +8,10 @@ import HourlyForecast from '@/app/Components/HourlyForecast';
 function WeatherInfo({ weatherData }: CurrentWeatherProps) {
       return (
             <>
-                  <div className="w-12/12 my-5 mx-auto">
+                  <div
+                        className="w-12/12 my-5 mx-auto"
+                        key={weatherData.latitude + weatherData.longitude}
+                  >
                         <CurrentWeather
                               weatherData={
                                     weatherData as NewWeatherSchemaWithCity

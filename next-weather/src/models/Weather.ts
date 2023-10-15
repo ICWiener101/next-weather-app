@@ -26,6 +26,7 @@ const HourlyData = z.object({
       winddirection_10m: z.array(z.number()),
       uv_index: z.array(z.number()),
       weathercode: z.array(z.number()),
+      is_day: z.array(z.number()),
 });
 
 const DailyData = z.object({
