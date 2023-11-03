@@ -9,7 +9,7 @@ function WeatherForecast({ weatherData }: CurrentWeatherProps) {
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  className="flex flex-col my-10 w-1/3 mx-auto gap-12"
+                  className="flex flex-wrap my-10 w-full mx-auto justify-evenly"
             >
                   {weatherData.daily.time.slice(1).map((dateStr, index) => {
                         return (

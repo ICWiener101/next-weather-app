@@ -59,6 +59,7 @@ export const WeatherSchema = z.object({
 });
 
 const NewWeatherWithCity = WeatherSchema.extend({
+      currentTime: z.date(),
       city: z.string(),
 });
 

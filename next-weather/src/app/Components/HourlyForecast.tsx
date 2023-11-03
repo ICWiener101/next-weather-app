@@ -10,6 +10,8 @@ import {
 import { useEffect, useState } from 'react';
 import { degreesToWindDirection, weatherDescIcon } from '@/lib/util';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { divIcon } from 'leaflet';
 
 type HourlyProps = {
       weatherData: HourlyData;
@@ -33,35 +35,40 @@ const columns = [
             cell: (info) => info.getValue().toString().split('T')[1],
       }),
       columnHelper.accessor('weathercode', {
-            header: 'Description',
+            header: 'Weather',
             cell: ({ row }) => (
                   <div className="flex items-center justify-evenly w-full">
-                        {
-                              weatherDescIcon(
-                                    row.original.weathercode,
-                                    row.original.is_day
-                              )?.description
-                        }
-                        <img
+                        <Image
                               src={
                                     weatherDescIcon(
                                           row.original.weathercode,
                                           row.original.is_day
-                                    )?.iconUrl
+                                    )
+                                          ? weatherDescIcon(
+                                                  row.original.weathercode,
+                                                  row.original.is_day
+                                            )!.iconUrl
+                                          : '/icons/unknown.png'
                               }
                               alt={
                                     weatherDescIcon(
                                           row.original.weathercode,
                                           row.original.is_day
-                                    )?.description
+                                    )
+                                          ? weatherDescIcon(
+                                                  row.original.weathercode,
+                                                  row.original.is_day
+                                            )!.description
+                                          : 'weather description'
                               }
-                              className="w-7 h-full"
+                              width={28}
+                              height={28}
                         />
                   </div>
             ),
       }),
       columnHelper.accessor('temperature_2m', {
-            header: 'Temperature',
+            header: 'Temp.',
             cell: (info) => `${Math.ceil(info.getValue())}°C`,
       }),
       columnHelper.accessor('apparent_temperature', {
@@ -69,19 +76,27 @@ const columns = [
             cell: (info) => `${Math.ceil(info.getValue())}°C`,
       }),
       columnHelper.accessor('precipitation_probability', {
-            header: 'Chances of Rain',
+            header: 'Rain',
             cell: (info) => `${Math.ceil(info.getValue())}%`,
       }),
       columnHelper.accessor('windspeed_10m', {
-            header: 'Wind Speed',
-            cell: (info) => `${Math.ceil(info.getValue())} m/s`,
-      }),
-      columnHelper.accessor('winddirection_10m', {
-            header: 'Wind Direction',
+            header: 'Wind',
             cell: (info) => (
-                  <span className="bg-transparent font-bold">
-                        {degreesToWindDirection(info.getValue())}
-                  </span>
+                  <div className="w-5/12 mx-auto flex justify-between items-center">
+                        <span>
+                              <Image
+                                    src={degreesToWindDirection(
+                                          info.row.original.winddirection_10m
+                                    )}
+                                    alt="wind direction"
+                                    width={20}
+                                    height={20}
+                              />
+                        </span>
+                        <span>
+                              {Math.ceil(info.row.original.windspeed_10m)}m/s
+                        </span>
+                  </div>
             ),
       }),
       columnHelper.accessor('uv_index', {
@@ -127,7 +142,7 @@ function HourlyForecast({ weatherData }: HourlyProps) {
       });
 
       return (
-            <div className="p-2 max-w-6xl mx-auto rounded-xl">
+            <div className="p-2 w-full mx-auto rounded-xl md:max-w-4xl">
                   <motion.table
                         key={`${weatherData.time[0]}-${weatherData.apparent_temperature[0]}`}
                         animate={{ x: '0%' }}
@@ -208,7 +223,6 @@ function HourlyForecast({ weatherData }: HourlyProps) {
                               </tr>
                         </tfoot>
                   </motion.table>
-                  <div className="h-4" />
             </div>
       );
 }

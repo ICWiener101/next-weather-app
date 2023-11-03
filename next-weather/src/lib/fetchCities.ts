@@ -18,6 +18,7 @@ export default async function fetchCities(
             }
             const result = await response.json();
             const parsedCityList = CityListSchema.parse(result.data);
+            console.log(parsedCityList);
 
             if (parsedCityList) {
                   return parsedCityList;

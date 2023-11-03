@@ -6,6 +6,7 @@ import { useState } from 'react';
 export type Option = {
       value: string;
       label: string;
+      wikiDataId: string;
 };
 export type Location = {
       latitude: number;
@@ -25,6 +26,7 @@ function Search({ onSearchChange }: any) {
                   cities?.map((city) => ({
                         value: `${city.latitude} ${city.longitude}`,
                         label: `${city.city}, ${city.country}`,
+                        wikiDataId: `${city.wikiDataId}`,
                   })) || [];
 
             return { options };

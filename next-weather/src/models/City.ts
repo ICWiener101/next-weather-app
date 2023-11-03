@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const CitySchema = z.object({
       id: z.number(),
+      wikiDataId: z.string(),
       city: z.string(),
       country: z.string(),
       countryCode: z.string(),

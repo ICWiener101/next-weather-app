@@ -5,7 +5,7 @@ import {
       weekdayConverter,
       weatherDescIcon,
 } from '@/lib/util';
-
+import Image from 'next/image';
 function DailyForecastTile({
       dateStr,
       maxTemperature,
@@ -30,7 +30,6 @@ function DailyForecastTile({
       uvIndex: number;
 }) {
       const dayOfWeek = weekdayConverter(dateStr);
-      console.log(`${dayOfWeek}-${dateStr}`);
       return (
             <>
                   <motion.div
@@ -42,22 +41,34 @@ function DailyForecastTile({
                               visible: { opacity: 1, scale: 1 },
                               hidden: { opacity: 0, scale: 0 },
                         }}
-                        className="flex flex-wrap justify-between h-52 rounded-lg p-7 text-gray-700 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl items-center"
+                        className="flex flex-col gap-y-10 w-2/3 justify-between rounded-lg p-4 text-gray-700 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl items-center md:w-[14%]"
                         key={`${dayOfWeek}-${dateStr}`}
                   >
-                        <div className="flex w-1/4 flex-wrap items-center justify-center">
+                        <div className="flex w-5/6 flex-wrap items-center justify-center">
                               <h3 className="text-center font-semibold text-xl">
                                     {dayOfWeek}
                               </h3>
 
-                              <div className="w-1/3">
-                                    <img
-                                          className="w-full"
-                                          src={`${
+                              <div className="w-1/3 h-full relative">
+                                    <Image
+                                          src={
                                                 weatherDescIcon(weathercode, 1)
-                                                      ?.iconUrl
-                                          }`}
-                                          alt=""
+                                                      ? weatherDescIcon(
+                                                              weathercode,
+                                                              1
+                                                        )!.iconUrl
+                                                      : '/icons/unknown.png'
+                                          }
+                                          alt={
+                                                weatherDescIcon(weathercode, 1)
+                                                      ? weatherDescIcon(
+                                                              weathercode,
+                                                              1
+                                                        )!.description
+                                                      : 'weather description'
+                                          }
+                                          width={80}
+                                          height={80}
                                     />
                               </div>
 
@@ -70,67 +81,73 @@ function DailyForecastTile({
                         </div>
                         <div
                               key={dateStr}
-                              className="flex w-1/3 flex-wrap justify-between"
+                              className="flex w-2/3 flex-wrap justify-between gap-y-1"
                         >
-                              <div className="flex justify-between w-full">
+                              <div className="flex justify-between w-full items-center">
                                     <span className="flex items-center">
-                                          Rain chances{' '}
-                                          <img
-                                                className="h-full w-5"
-                                                src="icons/precipitation.png"
-                                                alt="uv icon"
+                                          <Image
+                                                src={'/icons/precipitation.png'}
+                                                alt="rain icon"
+                                                width={30}
+                                                height={30}
                                           />{' '}
                                     </span>
                                     <span>{precipitation}%</span>
                               </div>
-                              <div className="flex justify-between w-full">
+                              <div className="flex justify-between w-full items-center">
                                     <span className="flex items-center">
-                                          Sunrise{' '}
-                                          <img
-                                                className="h-full w-5"
-                                                src="icons/sunrise.png"
+                                          <Image
+                                                src={'/icons/sunrise.png'}
                                                 alt="sunrise"
+                                                width={30}
+                                                height={30}
                                           />{' '}
                                     </span>
                                     <span>{sunrise.split('T')[1]}</span>
                               </div>
                               <div className="flex justify-between w-full">
                                     <span className="flex items-center">
-                                          Sunset{' '}
-                                          <img
-                                                className="h-full w-6"
-                                                src="icons/sunset.png"
+                                          <Image
+                                                src={'/icons/sunset.png'}
                                                 alt="sunset"
+                                                width={30}
+                                                height={30}
                                           />{' '}
                                     </span>
                                     <span>{sunset.split('T')[1]}</span>
                               </div>
-                              <div className="flex justify-between w-full">
+                              <div className="flex justify-between w-full items-center">
                                     <span className="flex items-center">
-                                          Wind{' '}
-                                          <img
-                                                className="h-full w-5"
-                                                src="icons/wind.png"
+                                          <Image
+                                                src={'/icons/wind.png'}
                                                 alt="wind icon"
+                                                width={30}
+                                                height={30}
                                           />{' '}
                                     </span>
-                                    <span className="bg-transparent pl-1">
-                                          <span>{Math.ceil(windSpeed)}m/s</span>
+                                    <span className="bg-transparent pl-1 flex items-center">
+                                          <span className="pr-1">
+                                                {Math.ceil(windSpeed)}m/s
+                                          </span>
                                           <span>
-                                                {' '}
-                                                {degreesToWindDirection(
-                                                      windDirection
-                                                )}
+                                                <Image
+                                                      src={degreesToWindDirection(
+                                                            windDirection
+                                                      )}
+                                                      alt="wind direction"
+                                                      width={20}
+                                                      height={20}
+                                                />
                                           </span>
                                     </span>
                               </div>
-                              <div className="flex justify-between w-full">
+                              <div className="flex justify-between w-full items-center">
                                     <span className="flex items-center">
-                                          UV Index
-                                          <img
-                                                className="h-full w-5"
-                                                src="icons/uv.png"
+                                          <Image
+                                                src={'/icons/uv.png'}
                                                 alt="uv icon"
+                                                width={30}
+                                                height={30}
                                           />{' '}
                                     </span>{' '}
                                     <span>{Math.ceil(uvIndex)}</span>

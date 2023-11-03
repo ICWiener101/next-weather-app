@@ -8,9 +8,9 @@ const config: Config = {
       ],
       theme: {
             extend: {
-                  colors: {
-                        currentWeatherBlue: '#7ACCF3',
-                  },
+                  // colors: {
+                  //       currentWeatherBlue: '#7ACCF3',
+                  // },
             },
       },
       plugins: [],
