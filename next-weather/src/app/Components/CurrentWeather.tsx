@@ -40,7 +40,7 @@ function CurrentWeather({ weatherData }: CurrentWeatherProps) {
             <>
                   <div
                         key={weatherData.city}
-                        className="w-full sm:w-2/3 sm:mx-auto md:rounded-xl flex flex-col justify-start mx-auto"
+                        className="w-full sm:w-2/3 mx-auto md:rounded-xl flex flex-col justify-stretch"
                   >
                         <div className="mx-auto my-4 flex flex-col items-center">
                               <div className="flex mx-auto items-center">

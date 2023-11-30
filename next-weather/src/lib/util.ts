@@ -1,3 +1,5 @@
+import { HourlyData } from '@/models/Weather';
+
 export function degreesToWindDirection(degrees: number) {
       const directions = [
             '/icons/Wind Directions/Down.png', // North
@@ -296,4 +298,84 @@ export function parseDate(currentLocalTime: string): Date {
 
       const localTime = new Date(year, month, day, hour, minute, second);
       return localTime;
+}
+
+export function getFirstTen(data: HourlyData): HourlyData | null {
+      if (!data || !data.time || !data.time.length) {
+            return null;
+      }
+
+      const currentTime = new Date();
+      const currentIndex = data.time.findIndex((time) => {
+            const dataTime = new Date(time);
+            return dataTime > currentTime;
+      });
+
+      if (currentIndex === -1) {
+            return null;
+      }
+
+      const startIndex = currentIndex + 1;
+      const endIndex = startIndex + 10;
+
+      const sliceData = <T extends (string | number)[]>(arr: T): T =>
+            arr.slice(startIndex, endIndex) as T;
+
+      return {
+            time: sliceData(data.time),
+            temperature_2m: sliceData(data.temperature_2m),
+            apparent_temperature: sliceData(data.apparent_temperature),
+            precipitation_probability: sliceData(
+                  data.precipitation_probability
+            ),
+            rain: sliceData(data.rain as number[]), // Note: This assumes rain is a number[]
+            surface_pressure: sliceData(data.surface_pressure),
+            windspeed_10m: sliceData(data.windspeed_10m),
+            winddirection_10m: sliceData(data.winddirection_10m),
+            uv_index: sliceData(data.uv_index),
+            weathercode: sliceData(data.weathercode),
+            is_day: sliceData(data.is_day),
+      };
+}
+
+export function get24HourForecast(data: HourlyData): HourlyData | null {
+      if (!data || !data.time || !data.time.length) {
+            return null;
+      }
+
+      const currentTime = new Date();
+
+      // Calculate the timestamp for tomorrow
+      const tomorrow = new Date(currentTime);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+
+      // Find the index for the first hour of tomorrow
+      const startIndex = data.time.findIndex((time) => {
+            const dataTime = new Date(time);
+            return dataTime.getTime() >= tomorrow.getTime();
+      });
+
+      if (startIndex === -1 || data.time.length - startIndex < 24) {
+            return null;
+      }
+
+      const sliceData = <T extends (string | number)[]>(arr: T): T =>
+            arr.slice(startIndex, startIndex + 24) as T;
+
+      return {
+            time: sliceData(data.time),
+            temperature_2m: sliceData(data.temperature_2m),
+            apparent_temperature: sliceData(data.apparent_temperature),
+            precipitation_probability: sliceData(
+                  data.precipitation_probability
+            ),
+            rain: sliceData(data.rain as number[]),
+            surface_pressure: sliceData(data.surface_pressure),
+            windspeed_10m: sliceData(data.windspeed_10m),
+            winddirection_10m: sliceData(data.winddirection_10m),
+            uv_index: sliceData(data.uv_index),
+            weathercode: sliceData(data.weathercode),
+            is_day: sliceData(data.is_day),
+      };
 }

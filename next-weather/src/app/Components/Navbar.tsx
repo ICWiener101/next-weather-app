@@ -9,11 +9,26 @@ function Navbar({ setSelectedNavItem }: NavbarProps) {
       const handleNavigation = (selectedItem: string) => {
             setSelectedNavItem(selectedItem);
       };
+      const getNextDayOfWeek = (dayIndex: number): string => {
+            const daysOfWeek = [
+                  'Monday',
+                  'Tuesday',
+                  'Wednesday',
+                  'Thursday',
+                  'Friday',
+                  'Saturday',
+                  'Sunday',
+            ];
+            const today = new Date().getDay();
+            const nextDay = (today - 1 + dayIndex) % 7; // Get the day index for the next day
+            return daysOfWeek[nextDay];
+      };
 
+      const tomorrow = getNextDayOfWeek(1); // Get
       return (
             <>
                   <nav className="w-full mx-auto">
-                        <ul className="flex flex-wrap p-3 w-full lg:w-1/3 justify-between items-center">
+                        <ul className="flex flex-wrap p-3 w-full lg:w-2/3 justify-between items-center">
                               <li>
                                     <Link
                                           className="cursor-pointer py-3 px-4 rounded-lg font-bold text-lg text-slate-700 hover:bg-[#7FD4FC]"
@@ -33,7 +48,7 @@ function Navbar({ setSelectedNavItem }: NavbarProps) {
                                                 handleNavigation('tomorrow')
                                           }
                                     >
-                                          Tomorrow
+                                          {tomorrow}
                                     </Link>
                               </li>
                               <li>

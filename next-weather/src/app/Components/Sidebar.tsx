@@ -12,7 +12,7 @@ import Search, { Option } from '@/app/Components/Search';
 import GeoWeather from '@/app/Components/GeoWeather';
 import CurrentWeather from '@/app/Components/CurrentWeather';
 import fetchLocalTime from '@/lib/fetchLocalTime';
-import { parseDate } from '@/lib/util';
+import { get24HourForecast, getFirstTen, parseDate } from '@/lib/util';
 import Today from '@/app/today/page';
 import Navbar from '@/app/Components/Navbar';
 import Tomorrow from '../tomorrow/page';
@@ -130,16 +130,26 @@ const Sidebar = () => {
                               )}
                         </div>
                         <div className="w-full md:flex md:justify-center md:items-center md:col-span-3 md:row-span-2">
-                              {selectedNavItem === 'today' && (
-                                    <Today
-                                          weatherData={
-                                                currentWeather?.hourly as HourlyData
-                                          }
-                                    />
-                              )}
-                              {/* {selectedNavItem === 'tomorrow' && (
-            <Tomorrow weatherData={currentWeather as NewWeatherSchemaWithCity} />
-          )} */}
+                              {selectedNavItem === 'today' &&
+                                    currentWeather && (
+                                          <Today
+                                                weatherData={
+                                                      getFirstTen(
+                                                            currentWeather.hourly
+                                                      ) as HourlyData
+                                                }
+                                          />
+                                    )}
+                              {selectedNavItem === 'tomorrow' &&
+                                    currentWeather && (
+                                          <Tomorrow
+                                                weatherData={
+                                                      get24HourForecast(
+                                                            currentWeather.hourly
+                                                      ) as HourlyData
+                                                }
+                                          />
+                                    )}
 
                               {selectedNavItem === 'forecast' && (
                                     <Forecast

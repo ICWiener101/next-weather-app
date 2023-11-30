@@ -128,7 +128,7 @@ function HourlyForecast({ weatherData }: HourlyProps) {
                         const dataTime = new Date(data.time);
                         const dataHour = dataTime.getHours();
 
-                        return dataHour >= hour || dataTime > new Date();
+                        return dataHour >= hour || dataTime > currentTime;
                   });
             setData(newData);
       }, [weatherData, hour]);
@@ -139,6 +139,8 @@ function HourlyForecast({ weatherData }: HourlyProps) {
             getCoreRowModel: getCoreRowModel(),
             getPaginationRowModel: getPaginationRowModel(),
       });
+
+      const showPagination = data.length > 11;
       console.log('hourly data', weatherData);
 
       return (
@@ -148,7 +150,7 @@ function HourlyForecast({ weatherData }: HourlyProps) {
                         animate={{ x: '0%' }}
                         transition={{ duration: 0.4 }}
                         initial={{ x: '-100%' }}
-                        className="w-full md:rounded-xl border-0 text-center border-slate-300 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl rounded-b-xl"
+                        className=" w-full md:rounded-xl border-0 text-center border-slate-300 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl rounded-b-xl"
                   >
                         <thead className="h-12">
                               {table.getHeaderGroups().map((headerGroup) => (
@@ -193,35 +195,37 @@ function HourlyForecast({ weatherData }: HourlyProps) {
                                     </tr>
                               ))}
                         </tbody>
-                        <tfoot className="text-center rounded-xl border-0 border-t table-auto  border-slate-300 h-12">
-                              <tr>
-                                    <td colSpan={8}>
-                                          <div className="mx-auto w-1/3 flex justify-evenly">
-                                                <button
-                                                      onClick={() =>
-                                                            table.previousPage()
-                                                      }
-                                                      disabled={
-                                                            !table.getCanPreviousPage()
-                                                      }
-                                                >
-                                                      Previous
-                                                </button>{' '}
-                                                <button
-                                                      className="hover:text-[#3099EA]"
-                                                      onClick={() =>
-                                                            table.nextPage()
-                                                      }
-                                                      disabled={
-                                                            !table.getCanNextPage()
-                                                      }
-                                                >
-                                                      Next
-                                                </button>
-                                          </div>
-                                    </td>
-                              </tr>
-                        </tfoot>
+                        {showPagination && (
+                              <tfoot className="text-center rounded-xl border-0 border-t table-auto border-slate-300 h-12">
+                                    <tr>
+                                          <td colSpan={8}>
+                                                <div className="mx-auto w-1/3 flex justify-evenly">
+                                                      <button
+                                                            onClick={() =>
+                                                                  table.previousPage()
+                                                            }
+                                                            disabled={
+                                                                  !table.getCanPreviousPage()
+                                                            }
+                                                      >
+                                                            Previous
+                                                      </button>{' '}
+                                                      <button
+                                                            className="hover:text-[#3099EA]"
+                                                            onClick={() =>
+                                                                  table.nextPage()
+                                                            }
+                                                            disabled={
+                                                                  !table.getCanNextPage()
+                                                            }
+                                                      >
+                                                            Next
+                                                      </button>
+                                                </div>
+                                          </td>
+                                    </tr>
+                              </tfoot>
+                        )}
                   </motion.table>
             </div>
       );
