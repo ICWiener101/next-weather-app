@@ -41,15 +41,14 @@ function DailyForecastTile({
                               visible: { opacity: 1, scale: 1 },
                               hidden: { opacity: 0, scale: 0 },
                         }}
-                        className="flex flex-col gap-y-10 w-2/3 justify-between rounded-lg p-4 text-gray-700 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl items-center md:w-[14%]"
+                        className="flex flex-col w-full gap-y-4 justify-between rounded-lg p-4 text-gray-700 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl items-center "
                         key={`${dayOfWeek}-${dateStr}`}
                   >
-                        <div className="flex w-5/6 flex-wrap items-center justify-center">
+                        <div className="flex w-5/6 flex-col items-center justify-center mx-auto">
                               <h3 className="text-center font-semibold text-xl">
                                     {dayOfWeek}
                               </h3>
-
-                              <div className="w-1/3 h-full relative">
+                              <div className="w-1/3 h-full relative mx-auto">
                                     <Image
                                           src={
                                                 weatherDescIcon(weathercode, 1)

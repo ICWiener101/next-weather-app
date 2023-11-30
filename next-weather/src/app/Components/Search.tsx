@@ -35,14 +35,21 @@ function Search({ onSearchChange }: any) {
             control: (provided: any, state: any) => ({
                   ...provided,
                   borderRadius: '10px',
-                  backgroundColor: '#B9E5FD',
+                  padding: '10px',
+                  backgroundColor: '#7fd4fc',
                   border: 'none',
                   boxShadow: state.isFocused ? '0 0 0 2px #3699FF' : null,
+                  color: '#fffff',
             }),
             option: (provided: any, state: any) => ({
                   ...provided,
                   backgroundColor: state.isFocused ? '#7FD4FC' : null,
                   color: '#4B5563',
+            }),
+            placeholder: (provided: any) => ({
+                  ...provided,
+                  color: '#ffffff',
+                  fontWeight: 'bold',
             }),
       };
       const handleOnChange = (selectedCity: Option | null) => {
@@ -51,7 +58,7 @@ function Search({ onSearchChange }: any) {
       };
       return (
             <>
-                  <div className="w-96 text-gray-500">
+                  <div className="w-2/3 mx-auto py-20">
                         {' '}
                         <AsyncPaginate
                               components={{

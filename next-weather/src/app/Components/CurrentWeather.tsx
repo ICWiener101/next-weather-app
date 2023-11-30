@@ -38,24 +38,31 @@ function CurrentWeather({ weatherData }: CurrentWeatherProps) {
 
       return (
             <>
-                  <motion.div
+                  <div
                         key={weatherData.city}
-                        animate={{ x: '-0%' }}
-                        transition={{ duration: 0.4 }}
-                        initial={{ x: '100%' }}
-                        className="my-5 max-w-md rounded-xl p-2 flex flex-col justify-start mx-auto  bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl "
+                        className="w-full sm:w-2/3 sm:mx-auto md:rounded-xl flex flex-col justify-start mx-auto"
                   >
-                        <div className="mx-auto my-1 flex flex-col items-center">
+                        <div className="mx-auto my-4 flex flex-col items-center">
                               <div className="flex mx-auto items-center">
                                     <div>
-                                          <img
-                                                src={`${desc?.iconUrl}`}
-                                                alt=""
+                                          <Image
+                                                src={
+                                                      desc
+                                                            ? desc!.iconUrl
+                                                            : '/icons/unknown.png'
+                                                }
+                                                alt={
+                                                      desc
+                                                            ? desc!.description
+                                                            : 'weather description'
+                                                }
+                                                width={170}
+                                                height={170}
                                           />
                                     </div>
                               </div>
                               <div className="flex flex-col items-center mx-auto mb-4">
-                                    <div className="text-4xl font-bold text-slate-800">
+                                    <div className="text-5xl font-bold text-slate-800">
                                           {Math.ceil(
                                                 weatherData.current
                                                       .temperature_2m
@@ -63,7 +70,7 @@ function CurrentWeather({ weatherData }: CurrentWeatherProps) {
                                           &#8451;
                                     </div>
                                     <div>{desc?.description}</div>
-                                    <h3 className="font-semibold text-xl">
+                                    <h3 className="font-semibold text-2xl my-2">
                                           {weatherData.city}
                                     </h3>
                                     <div className="flex items-center justify-center w-full flex-wrap">
@@ -83,8 +90,8 @@ function CurrentWeather({ weatherData }: CurrentWeatherProps) {
                                     </div>
                               </div>
                         </div>
-                        <hr />
-                        <div className="w-1/2 mx-auto my-2">
+                        <div className="w-5/6 mx-auto border-t-4 border-slate-400"></div>
+                        <div className="w-1/2 mx-auto my-8">
                               <div className="flex justify-between">
                                     <span> Feels Like</span>
                                     <span>
@@ -97,7 +104,7 @@ function CurrentWeather({ weatherData }: CurrentWeatherProps) {
                               </div>
                               <div className="flex justify-between">
                                     <span>Wind</span>
-                                    <span className="flex justify-between w-1/3 items-center">
+                                    <span className="flex justify-between w-1/5 items-center">
                                           <span>
                                                 {' '}
                                                 {Math.ceil(
@@ -136,7 +143,7 @@ function CurrentWeather({ weatherData }: CurrentWeatherProps) {
                                     </span>
                               </div>
                         </div>
-                  </motion.div>
+                  </div>
             </>
       );
 }

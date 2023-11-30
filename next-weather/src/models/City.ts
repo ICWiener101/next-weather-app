@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const CitySchema = z.object({
+export const CitySchema = z.object({
       id: z.number(),
       wikiDataId: z.string(),
       city: z.string(),

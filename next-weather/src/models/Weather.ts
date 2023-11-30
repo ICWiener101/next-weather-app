@@ -15,6 +15,14 @@ const CurrentData = z.object({
       winddirection_10m: z.number(),
 });
 
+export const CurrentWeatherSimplified = z.object({
+      time: z.string(),
+      temperature_2m: z.number(),
+      apparent_temperature: z.number(),
+      is_day: z.number(),
+      weather_code: z.number(),
+});
+
 const HourlyData = z.object({
       time: z.array(z.string()),
       temperature_2m: z.array(z.number()),
@@ -67,3 +75,4 @@ export type HourlyData = z.infer<typeof HourlyData>;
 export type DailyData = z.infer<typeof DailyData>;
 export type NewWeatherSchemaWithCity = z.infer<typeof NewWeatherWithCity>;
 export type NewWeatherType = z.infer<typeof WeatherSchema>;
+export type CurrentWeatherType = z.infer<typeof CurrentWeatherSimplified>;

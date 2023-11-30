@@ -21,17 +21,17 @@ function WeatherInfo({ weatherData }: CurrentWeatherProps) {
                               weatherData={weatherData.hourly as HourlyData}
                         />
 
-                        <WeatherForecast
+                        {/* <WeatherForecast
                               weatherData={
                                     weatherData as NewWeatherSchemaWithCity
                               }
-                        />
+                        /> */}
 
-                        <Map
+                        {/* <Map
                               weatherData={
                                     weatherData as NewWeatherSchemaWithCity
                               }
-                        />
+                        /> */}
                   </div>
             </>
       );

@@ -1,102 +1,67 @@
-'use client';
-import { useState } from 'react';
-import { NewWeatherSchemaWithCity } from '@/models/Weather';
-import { fetchWeather } from '@/lib/fetchWeather';
+import Link from 'next/link';
+import React, { Dispatch, SetStateAction } from 'react';
 
-export type Location = {
-      latitude: number;
-      longitude: number;
-};
+interface NavbarProps {
+      setSelectedNavItem: Dispatch<SetStateAction<string>>;
+}
 
-import WeatherInfo from '@/app/Components/WeatherInfo';
-
-import Search, { Option } from '@/app/Components/Search';
-import fetchLocalTime from '../../lib/fetchLocalTime';
-
-const Navbar = () => {
-      const [location, setLocation] = useState<Location | null>(null);
-      const [currentWeather, setCurrentWeather] =
-            useState<NewWeatherSchemaWithCity | null>(null);
-
-      const handleOnSearchChange = async (selectedCity: Option) => {
-            const [latitude, longitude] = selectedCity?.value.split(' ');
-            setLocation({
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-            });
-            console.log(selectedCity);
-
-            try {
-                  const [weatherData, currentLocalTime] = await Promise.all([
-                        fetchWeather(
-                              parseFloat(latitude),
-                              parseFloat(longitude)
-                        ),
-                        fetchLocalTime(selectedCity.wikiDataId),
-                  ]);
-
-                  if (weatherData && currentLocalTime) {
-                        const parts = currentLocalTime.split(/[-T:.+]/);
-                        const year = parseInt(parts[0]);
-                        const month = parseInt(parts[1]) - 1; // Months are 0-based in JavaScript
-                        const day = parseInt(parts[2]);
-                        const hour = parseInt(parts[3]);
-                        const minute = parseInt(parts[4]);
-                        const second = parseInt(parts[5]);
-                        console.log(
-                              new Date(year, month, day, hour, minute, second)
-                        );
-
-                        const localTime = new Date(
-                              year,
-                              month,
-                              day,
-                              hour,
-                              minute,
-                              second
-                        );
-                        console.log(currentLocalTime);
-
-                        console.log(localTime);
-
-                        setCurrentWeather({
-                              currentTime: localTime,
-                              city: selectedCity.label,
-                              ...weatherData,
-                        });
-                  }
-            } catch (error) {
-                  console.log(error);
-            }
+function Navbar({ setSelectedNavItem }: NavbarProps) {
+      const handleNavigation = (selectedItem: string) => {
+            setSelectedNavItem(selectedItem);
       };
 
       return (
             <>
-                  <header className="bg-gradient-to-r from-sky-200 to-sky-300 shadow-xl sticky top-0 z-10">
-                        <nav className="flex justify-center sm:flex-row sm:justify-between p-4 font-bold max-w-6xl items-center mx-auto text-gray-600">
-                              {/* <div className="w-1/6 flex justify-evenly">
-                                    <Link href="/">Home</Link>
-                                    <Link href="/today">Today</Link>
-                              </div> */}
-                              <div className="mx-auto">
-                                    {' '}
-                                    <Search
-                                          onSearchChange={handleOnSearchChange}
-                                    />
-                              </div>
-                        </nav>
-                  </header>
-                  <div>
-                        {currentWeather && (
-                              <WeatherInfo
-                                    weatherData={
-                                          currentWeather as NewWeatherSchemaWithCity
-                                    }
-                              />
-                        )}
-                  </div>
+                  <nav className="w-full mx-auto">
+                        <ul className="flex flex-wrap p-3 w-full lg:w-1/3 justify-between items-center">
+                              <li>
+                                    <Link
+                                          className="cursor-pointer py-3 px-4 rounded-lg font-bold text-lg text-slate-700 hover:bg-[#7FD4FC]"
+                                          href="/today"
+                                          onClick={() =>
+                                                handleNavigation('today')
+                                          }
+                                    >
+                                          10 Hours
+                                    </Link>
+                              </li>
+                              <li>
+                                    <Link
+                                          className="cursor-pointer py-3 px-4 rounded-lg font-bold text-lg text-slate-700 hover:bg-[#7FD4FC]"
+                                          href="/tomorrow"
+                                          onClick={() =>
+                                                handleNavigation('tomorrow')
+                                          }
+                                    >
+                                          Tomorrow
+                                    </Link>
+                              </li>
+                              <li>
+                                    <Link
+                                          className="cursor-pointer py-3 px-4 rounded-lg font-bold text-lg text-slate-700 hover:bg-[#7FD4FC]"
+                                          href="/forecast"
+                                          onClick={() =>
+                                                handleNavigation('forecast')
+                                          }
+                                    >
+                                          Next 6 days
+                                    </Link>
+                              </li>
+                              <li>
+                                    <Link
+                                          className="cursor-pointer py-3 px-4 rounded-lg font-bold text-lg text-slate-700 hover:bg-[#7FD4FC]"
+                                          href="/weatherMap"
+                                          onClick={() =>
+                                                handleNavigation('weatherMap')
+                                          }
+                                    >
+                                          Map
+                                    </Link>
+                              </li>
+                        </ul>
+                  </nav>
             </>
       );
-};
+}
 
 export default Navbar;

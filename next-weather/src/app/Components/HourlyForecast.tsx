@@ -11,9 +11,8 @@ import { useEffect, useState } from 'react';
 import { degreesToWindDirection, weatherDescIcon } from '@/lib/util';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { divIcon } from 'leaflet';
 
-type HourlyProps = {
+export type HourlyProps = {
       weatherData: HourlyData;
 };
 
@@ -82,15 +81,15 @@ const columns = [
       columnHelper.accessor('windspeed_10m', {
             header: 'Wind',
             cell: (info) => (
-                  <div className="w-5/12 mx-auto flex justify-between items-center">
+                  <div className="w-full flex justify-center items-center">
                         <span>
                               <Image
                                     src={degreesToWindDirection(
                                           info.row.original.winddirection_10m
                                     )}
                                     alt="wind direction"
-                                    width={20}
-                                    height={20}
+                                    width={18}
+                                    height={18}
                               />
                         </span>
                         <span>
@@ -140,15 +139,16 @@ function HourlyForecast({ weatherData }: HourlyProps) {
             getCoreRowModel: getCoreRowModel(),
             getPaginationRowModel: getPaginationRowModel(),
       });
+      console.log('hourly data', weatherData);
 
       return (
-            <div className="p-2 w-full mx-auto rounded-xl md:max-w-4xl">
+            <div className="w-full md:w-5/6">
                   <motion.table
                         key={`${weatherData.time[0]}-${weatherData.apparent_temperature[0]}`}
                         animate={{ x: '0%' }}
                         transition={{ duration: 0.4 }}
                         initial={{ x: '-100%' }}
-                        className="text-center rounded-xl border-0 table-auto w-full border-slate-300 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl rounded-b-xl"
+                        className="w-full md:rounded-xl border-0 text-center border-slate-300 bg-gradient-to-b from-sky-100 to-sky-200 shadow-xl hover:shadow-2xl rounded-b-xl"
                   >
                         <thead className="h-12">
                               {table.getHeaderGroups().map((headerGroup) => (

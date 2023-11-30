@@ -283,3 +283,17 @@ export function weatherDescIcon(weatherCode: number, isDay: number) {
             return { description: data.description, iconUrl: data.iconUrl };
       }
 }
+
+export function parseDate(currentLocalTime: string): Date {
+      const parts = currentLocalTime.split(/[-T:.+]/);
+      const year = parseInt(parts[0]);
+      const month = parseInt(parts[1]) - 1;
+      const day = parseInt(parts[2]);
+      const hour = parseInt(parts[3]);
+      const minute = parseInt(parts[4]);
+      const second = parseInt(parts[5]);
+      console.log(new Date(year, month, day, hour, minute, second));
+
+      const localTime = new Date(year, month, day, hour, minute, second);
+      return localTime;
+}

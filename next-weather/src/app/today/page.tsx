@@ -1,7 +1,23 @@
-import React from 'react';
+import HourlyForecast, { HourlyProps } from '@/app/Components/HourlyForecast';
 
-const Page = () => {
-      return <div>Today</div>;
-};
+import { HourlyData } from '@/models/Weather';
+// import { useEffect, useState } from 'react';
 
-export default Page;
+function Today({ weatherData }: HourlyProps) {
+      const tenHourForecast = Object.values(weatherData).map(
+            (array) => array.slice
+      );
+      console.log(weatherData?.apparent_temperature);
+
+      return (
+            <>
+                  {weatherData && (
+                        <HourlyForecast
+                              weatherData={weatherData as HourlyData}
+                        />
+                  )}
+            </>
+      );
+}
+
+export default Today;

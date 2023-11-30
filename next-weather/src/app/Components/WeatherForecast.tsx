@@ -9,7 +9,7 @@ function WeatherForecast({ weatherData }: CurrentWeatherProps) {
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  className="flex flex-wrap my-10 w-full mx-auto justify-evenly"
+                  className="w-full sm:w-5/6 sm:mx-auto gap-y-4 md:w-5/6 grid md:grid-cols-3 md:grid-rows-2 md:gap-16"
             >
                   {weatherData.daily.time.slice(1).map((dateStr, index) => {
                         return (
@@ -58,3 +58,5 @@ function WeatherForecast({ weatherData }: CurrentWeatherProps) {
       );
 }
 export default WeatherForecast;
+
+// grid place-items-center justify-around justify-self-center justify-items-center items-center self-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10

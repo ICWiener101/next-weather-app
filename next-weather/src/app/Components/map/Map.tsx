@@ -26,12 +26,12 @@ function Map({ weatherData }: CurrentWeatherProps) {
       };
 
       return (
-            <div className="h-96 w-9/12 mx-auto rounded-xl mb-28">
+            <div className="h-96 w-full mx-auto rounded-xl mb-28 z-0 relative">
                   <MapContainer
                         center={mapPosition as [number, number]}
                         style={mapStyle}
                         zoom={9}
-                        key={mapPosition.toString()} // forcing the map component to reload when the position is changed
+                        key={mapPosition.toString()}
                         scrollWheelZoom={true}
                   >
                         <TileLayer
